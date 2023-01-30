@@ -1,6 +1,5 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -67,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
         break;
       case 1:
         {
-          page = const Placeholder();
+          page = const FavoritesPage();
         }
         break;
       default:
@@ -190,6 +189,62 @@ class BigCard extends StatelessWidget {
           semanticsLabel: pair.asUpperCase,
         ),
       ),
+    );
+  }
+}
+
+class FavoritesPage extends StatelessWidget {
+  const FavoritesPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+    const textStyle1 = TextStyle(
+      fontSize: 32,
+      fontWeight: FontWeight.bold,
+    );
+    const textStyle2 = TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: Colors.purple,
+    );
+    const textStyle3 = TextStyle(
+      fontSize: 26,
+      fontWeight: FontWeight.bold,
+    );
+
+    if (appState.favorites.isEmpty) {
+      return const Center(
+        child: Text(
+          'No favorites yet.',
+          style: textStyle1,
+        ),
+      );
+    }
+
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text(
+            'You have '
+            '${appState.favorites.length} favorites:',
+            style: textStyle2,
+          ),
+        ),
+        for (var pair in appState.favorites)
+          ListTile(
+            leading: const Icon(
+              Icons.favorite,
+              size: 26,
+            ),
+            title: Text(
+              pair.asLowerCase,
+              style: textStyle3,
+            ),
+            subtitle: const Text('yoyoyo'),
+          ),
+      ],
     );
   }
 }
